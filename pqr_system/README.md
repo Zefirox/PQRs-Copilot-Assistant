@@ -1,30 +1,24 @@
-# 🏛️ Sistema de Procesamiento de PQRs con IA
+# 🏛️ AI-Powered PQR Processing System
 
-Sistema inteligente para el procesamiento de **Peticiones, Quejas, Reclamos y Sugerencias (PQRs)** en entidades públicas colombianas, basado en la **Ley 1437 de 2011 (CPACA)** y la **Ley 1755 de 2015**.
+Intelligent system for processing **Peticiones, Quejas, Reclamos y Sugerencias (PQRs)** in Colombian public entities, based on **Ley 1437 de 2011 (CPACA)** and **Ley 1755 de 2015**.
 
-## 🚀 Funcionalidades Principales
+## 🚀 Core Features
 
-### 1. 📊 Clasificación y Enrutamiento Semántico Automatizado
-- Un LLM procesa el texto libre del ciudadano para clasificar la solicitud
-- Identifica automáticamente si es **Petición, Queja, Reclamo o Sugerencia**
-- Calcula los **términos legales de respuesta** en días hábiles según la normativa colombiana
-- Asigna automáticamente al **área competente** de la entidad
-- **Fallback** basado en palabras clave cuando no hay LLM disponible
+### 1. 📊 Semantic Classification & Automated Routing
+- An LLM processes the citizen's free-text input to classify the request
+- Automatically identifies whether it's a **Petición, Queja, Reclamo or Sugerencia**
+- Calculates **legal response terms** in business days according to Colombian regulations
+- Automatically assigns to the **competent area** within the entity
+- **Fallback** based on keyword analysis when no LLM is available
 
-### 2. ✅ Análisis de Completitud (Validación al Instante)
-- La IA evalúa el contenido en **tiempo real** al momento de la radicación
-- Detecta datos obligatorios faltantes (cédula, dirección, soportes)
-- Mensajes amigables: *"Detectamos que mencionas una factura pero no la has adjuntado, ¿deseas incluirla para agilizar tu trámite?"*
-- Puntuación de completitud (0-100%)
+### 2. 🤖 Response Copilot for Officials (RAG)
+- **RAG** architecture (Retrieval-Augmented Generation)
+- Searches the knowledge base: regulations, internal policies, historical responses
+- Generates **formal, structured, and legally sound drafts**
+- The official reviews and adjusts — **assisted, not replaced**
+- Reduces drafting time from hours to minutes
 
-### 3. 🤖 Copiloto de Respuestas para Funcionarios (RAG)
-- Arquitectura **RAG** (Retrieval-Augmented Generation)
-- Busca en la base de conocimientos: normativas, políticas internas, respuestas históricas
-- Genera **borradores formales, estructurados y jurídicamente sólidos**
-- El funcionario revisa y ajusta — **no se reemplaza, se asiste**
-- Reduce el tiempo de redacción de horas a minutos
-
-## 🏗️ Arquitectura
+## 🏗️ Architecture
 
 ```
 pqr_system/
@@ -38,7 +32,6 @@ pqr_system/
     │   │   └── classification.py # Colombian law definitions
     │   ├── services/
     │   │   ├── classifier.py    # Semantic classification service
-    │   │   ├── completeness.py  # Completeness analysis service
     │   │   └── rag_engine.py    # RAG engine & copilot service
     │   └── data/
     │       └── knowledge_base.py # Default knowledge base
@@ -51,70 +44,69 @@ pqr_system/
     └── run.py                   # Run script
 ```
 
-## ⚡ Inicio Rápido
+## ⚡ Quick Start
 
-### Prerrequisitos
+### Prerequisites
 - Python 3.10+
 - pip
 
-### Instalación
+### Installation
 
 ```bash
 cd pqr_system/backend
 pip install -r requirements.txt
 ```
 
-### Configuración
+### Configuration
 
-Edite el archivo `.env` para configurar su API key de OpenAI:
+Edit the `.env` file to configure your OpenAI API key:
 
 ```env
-OPENAI_API_KEY=sk-su-api-key-aqui
+OPENAI_API_KEY=sk-your-api-key-here
 OPENAI_MODEL=gpt-4
 ```
 
-> **Nota:** El sistema funciona sin API key de OpenAI usando clasificación por palabras clave y plantillas de respuesta como fallback.
+> **Note:** The system works without an OpenAI API key using keyword-based classification and response templates as fallback.
 
-### Ejecución
+### Running
 
 ```bash
 python run.py
 ```
 
-La aplicación estará disponible en:
-- 🌐 **Interfaz web:** http://localhost:8000
+The application will be available at:
+- 🌐 **Web interface:** http://localhost:8000
 - 📚 **API docs:** http://localhost:8000/docs
 - 🔧 **API ReDoc:** http://localhost:8000/redoc
 
 ## 📡 API Endpoints
 
-| Método | Endpoint | Descripción |
+| Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/v1/pqr` | Radicar nuevo PQR (clasifica + analiza completitud) |
-| `GET` | `/api/v1/pqr` | Listar PQRs con filtros |
-| `GET` | `/api/v1/pqr/{id}` | Obtener PQR por ID |
-| `POST` | `/api/v1/pqr/classify` | Clasificar texto sin radicar |
-| `POST` | `/api/v1/pqr/analyze-completeness` | Analizar completitud sin radicar |
-| `POST` | `/api/v1/copilot/generate` | Generar borrador de respuesta (RAG) |
-| `GET` | `/api/v1/copilot/knowledge-base/stats` | Estadísticas de base de conocimientos |
-| `POST` | `/api/v1/copilot/knowledge-base/load` | Cargar documentos a la base |
+| `POST` | `/api/v1/pqr` | File a new PQR (classifies + assigns + calculates deadline) |
+| `GET` | `/api/v1/pqr` | List PQRs with filters |
+| `GET` | `/api/v1/pqr/{id}` | Get PQR by ID |
+| `POST` | `/api/v1/pqr/classify` | Classify text without filing |
+| `POST` | `/api/v1/copilot/generate` | Generate response draft (RAG) |
+| `GET` | `/api/v1/copilot/knowledge-base/stats` | Knowledge base statistics |
+| `POST` | `/api/v1/copilot/knowledge-base/load` | Load documents into the knowledge base |
 | `GET` | `/api/v1/health` | Health check |
 
-## 🇨🇴 Normatividad Colombiana Implementada
+## 🇨🇴 Colombian Regulations Implemented
 
-| Tipo de PQR | Término | Base Legal |
-|-------------|---------|------------|
-| Petición de Información | 10 días hábiles | Art. 21 Ley 1437/2011 |
-| Petición de Documentos | 10 días hábiles | Art. 21 Ley 1437/2011 |
-| Petición de Consulta | 30 días hábiles | Art. 21 Ley 1437/2011 |
-| Petición General | 15 días hábiles | Art. 14 Ley 1437/2011 |
-| Queja | 15 días hábiles | Art. 14 Ley 1437/2011 |
-| Reclamo | 15 días hábiles | Art. 14 Ley 1437/2011 |
-| Sugerencia | 30 días calendario | Buena práctica |
+| PQR Type | Response Term | Legal Basis |
+|----------|---------------|-------------|
+| Petición de Información | 10 business days | Art. 21 Ley 1437/2011 |
+| Petición de Documentos | 10 business days | Art. 21 Ley 1437/2011 |
+| Petición de Consulta | 30 business days | Art. 21 Ley 1437/2011 |
+| Petición General | 15 business days | Art. 14 Ley 1437/2011 |
+| Queja | 15 business days | Art. 14 Ley 1437/2011 |
+| Reclamo | 15 business days | Art. 14 Ley 1437/2011 |
+| Sugerencia | 30 calendar days | Best practice |
 
-## 🧪 Ejemplos de Uso
+## 🧪 Usage Examples
 
-### Radicar un PQR
+### File a PQR
 ```bash
 curl -X POST http://localhost:8000/api/v1/pqr \
   -H "Content-Type: application/json" \
@@ -131,7 +123,7 @@ curl -X POST http://localhost:8000/api/v1/pqr \
   }'
 ```
 
-### Generar borrador con Copiloto
+### Generate draft with Copilot
 ```bash
 curl -X POST http://localhost:8000/api/v1/copilot/generate \
   -H "Content-Type: application/json" \
@@ -143,13 +135,13 @@ curl -X POST http://localhost:8000/api/v1/copilot/generate \
   }'
 ```
 
-## 🔧 Tecnologías
+## 🔧 Technologies
 
 - **Backend:** FastAPI, Pydantic, OpenAI Python SDK
-- **IA/ML:** OpenAI GPT-4, ChromaDB (vector store), RAG
+- **AI/ML:** OpenAI GPT-4 / DeepSeek, ChromaDB (vector store), RAG, sentence-transformers
 - **Frontend:** HTML5, CSS3, JavaScript (vanilla)
-- **Normatividad:** Ley 1437/2011 (CPACA), Ley 1755/2015, Ley 850/2003
+- **Regulations:** Ley 1437/2011 (CPACA), Ley 1755/2015, Ley 850/2003
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto es de uso libre para entidades públicas colombianas.
+This project is free to use for Colombian public entities.
