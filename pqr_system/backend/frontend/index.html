@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de PQRs con IA</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">🏛️</span>
+            <span class="nav-title">Sistema de PQRs con IA</span>
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="radicar">📝 Radicar PQR</button>
+            <button class="nav-tab" data-tab="consultar">🔍 Consultar</button>
+            <button class="nav-tab" data-tab="copiloto">🤖 Copiloto</button>
+        </div>
+    </nav>
+
+    <!-- TAB: Radicar PQR -->
+    <main id="tab-radicar" class="tab-content active">
+        <div class="container">
+            <div class="page-header">
+                <h1>Radicación de PQR</h1>
+                <p>Complete el formulario para radicar su Petición, Queja, Reclamo o Sugerencia. La IA clasificará y enrutará automáticamente su solicitud.</p>
+            </div>
+
+            <div class="two-column">
+                <!-- Left: Form -->
+                <div class="card">
+                    <h2 class="card-title">📝 Datos del PQR</h2>
+                    
+                    <div class="form-group">
+                        <label for="asunto">Asunto</label>
+                        <input type="text" id="asunto" placeholder="Ej: Solicitud de información sobre servicios de acueducto" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contenido">Contenido <span class="required">*</span></label>
+                        <textarea id="contenido" rows="6" placeholder="Describa su solicitud en detalle. La IA clasificará automáticamente el tipo de PQR (Petición, Queja, Reclamo o Sugerencia) y lo asignará al área competente." class="form-input" required></textarea>
+                        <div class="char-count"><span id="charCount">0</span> caracteres</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="archivos">Archivos adjuntos</label>
+                        <input type="file" id="archivos" multiple class="form-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                        <small class="form-hint">PDF, JPG, PNG - Máximo 10MB por archivo</small>
+                    </div>
+
+                    <h3 class="section-title">👤 Datos del Ciudadano</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">Nombre completo <span class="required">*</span></label>
+                            <input type="text" id="nombre" placeholder="Juan Pérez García" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoDoc">Tipo documento</label>
+                            <select id="tipoDoc" class="form-input">
+                                <option value="">Seleccione</option>
+                                <option value="CC">Cédula de Ciudadanía</option>
+                                <option value="CE">Cédula de Extranjería</option>
+                                <option value="TI">Tarjeta de Identidad</option>
+                                <option value="NIT">NIT</option>
+                                <option value="PP">Pasaporte</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="numDoc">Número documento <span class="required">*</span></label>
+                            <input type="text" id="numDoc" placeholder="12345678" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" placeholder="correo@ejemplo.com" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" placeholder="300 123 4567" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="direccion">Dirección de notificación</label>
+                            <input type="text" id="direccion" placeholder="Calle 10 # 20-30, Barrio" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="municipio">Municipio/Ciudad</label>
+                            <input type="text" id="municipio" placeholder="Bogotá" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="departamento">Departamento</label>
+                            <input type="text" id="departamento" placeholder="Cundinamarca" class="form-input">
+                        </div>
+                    </div>
+
+                    <button id="btnRadicar" class="btn btn-primary btn-lg" onclick="radicarPQR()">
+                        🚀 Radicar PQR con IA
+                    </button>
+                </div>
+
+                <!-- Right: AI Results -->
+                <div class="ai-panel">
+                    <div id="aiPreview" class="card card-ai">
+                        <h2 class="card-title">🤖 Análisis de IA en Tiempo Real</h2>
+                        <p class="text-muted">Escriba el contenido de su PQR y la IA analizará la clasificación automáticamente.</p>
+                        <div id="previewClassification" class="hidden">
+                            <h3>📊 Clasificación Semántica</h3>
+                            <div id="previewType" class="badge badge-info"></div>
+                            <div id="previewArea" class="mt-2"></div>
+                            <div id="previewPriority" class="mt-1"></div>
+                            <div id="previewTerm" class="mt-1"></div>
+                        </div>
+                    </div>
+
+                    <div id="aiResult" class="card card-success hidden">
+                        <h2 class="card-title">✅ PQR Radicado Exitosamente</h2>
+                        <div id="resultDetails"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- TAB: Consultar PQRs -->
+    <main id="tab-consultar" class="tab-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Consulta de PQRs</h1>
+                <p>Consulte los PQRs radicados y su estado actual.</p>
+            </div>
+
+            <div class="filter-bar">
+                <select id="filterType" class="form-input" onchange="loadPQRs()">
+                    <option value="">Todos los tipos</option>
+                    <option value="Petición">Petición</option>
+                    <option value="Queja">Queja</option>
+                    <option value="Reclamo">Reclamo</option>
+                    <option value="Sugerencia">Sugerencia</option>
+                </select>
+                <select id="filterStatus" class="form-input" onchange="loadPQRs()">
+                    <option value="">Todos los estados</option>
+                    <option value="Radicado">Radicado</option>
+                    <option value="Asignado">Asignado</option>
+                    <option value="En Proceso">En Proceso</option>
+                    <option value="Respondido">Respondido</option>
+                </select>
+                <button class="btn btn-secondary" onclick="loadPQRs()">🔄 Actualizar</button>
+            </div>
+
+            <div id="pqrList" class="pqr-list">
+                <div class="card text-center">
+                    <p class="text-muted">No hay PQRs radicados. ¡Radicar el primero!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- TAB: Copiloto -->
+    <main id="tab-copiloto" class="tab-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Copiloto de Respuestas</h1>
+                <p>Asistente de IA para funcionarios. Genera borradores de respuesta formales y jurídicamente sólidos basados en la base de conocimientos.</p>
+            </div>
+
+            <div class="two-column">
+                <div class="card">
+                    <h2 class="card-title">📋 Datos del PQR a Responder</h2>
+                    
+                    <div class="form-group">
+                        <label for="copilotPqrId">ID del PQR</label>
+                        <input type="text" id="copilotPqrId" placeholder="UUID del PQR" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="copilotType">Tipo de PQR</label>
+                        <select id="copilotType" class="form-input">
+                            <option value="Petición">Petición</option>
+                            <option value="Queja">Queja</option>
+                            <option value="Reclamo">Reclamo</option>
+                            <option value="Sugerencia">Sugerencia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="copilotContenido">Contenido del PQR <span class="required">*</span></label>
+                        <textarea id="copilotContenido" rows="6" placeholder="Pegue aquí el contenido del PQR que desea responder..." class="form-input"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="copilotNotas">Notas del Funcionario</label>
+                        <textarea id="copilotNotas" rows="3" placeholder="Instrucciones adicionales para la IA (opcional)..." class="form-input"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="copilotTono">Tono de la respuesta</label>
+                        <select id="copilotTono" class="form-input">
+                            <option value="formal">Formal y Jurídico</option>
+                            <option value="amable">Amable y Cercano</option>
+                            <option value="directo">Directo y Conciso</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" onclick="generateCopilotResponse()">
+                        🤖 Generar Borrador con IA
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📄 Borrador Generado</h2>
+                    <div id="copilotResult">
+                        <p class="text-muted">El borrador de respuesta aparecerá aquí. La IA buscará en la base de conocimientos y generará una respuesta formal y jurídicamente sólida.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Procesando con IA...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
