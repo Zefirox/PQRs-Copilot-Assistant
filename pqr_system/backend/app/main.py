@@ -56,10 +56,7 @@ app = FastAPI(
     1. **Clasificación y Enrutamiento Semántico**: Clasificación automática del PQR
        usando IA, con cálculo de términos legales según normativa colombiana.
     
-    2. **Análisis de Completitud**: Validación en tiempo real que detecta datos
-       faltantes y sugiere al ciudadano completarlos antes de radicar.
-    
-    3. **Copiloto de Respuestas (RAG)**: Generación de borradores de respuesta
+    2. **Copiloto de Respuestas (RAG)**: Generación de borradores de respuesta
        para funcionarios usando la base de conocimientos de la entidad.
     """,
     version="1.0.0",
