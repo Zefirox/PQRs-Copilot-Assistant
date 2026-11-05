@@ -10,11 +10,16 @@ from typing import Optional
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # OpenAI Configuration
+    # LLM Configuration (OpenAI-compatible - Huawei Cloud ModelArts MaaS, DeepSeek)
     openai_api_key: str = Field(default="sk-placeholder", alias="PQR_OPENAI_API_KEY")
-    openai_base_url: str = Field(default="https://api.openai.com/v1", alias="PQR_OPENAI_BASE_URL")
-    openai_classification_model: str = Field(default="gpt-4", alias="PQR_OPENAI_CLASSIFICATION_MODEL")
-    openai_model: str = Field(default="gpt-4", alias="PQR_OPENAI_MODEL")
+    openai_base_url: str = Field(
+        default="https://api-ap-southeast-1.modelarts-maas.com/openai/v1",
+        alias="PQR_OPENAI_BASE_URL",
+    )
+    openai_classification_model: str = Field(
+        default="deepseek-v4.1-flash-1017", alias="PQR_OPENAI_CLASSIFICATION_MODEL"
+    )
+    openai_model: str = Field(default="deepseek-v4.1-flash-1017", alias="PQR_OPENAI_MODEL")
     openai_embedding_model: str = Field(
         default="text-embedding-ada-002", alias="PQR_OPENAI_EMBEDDING_MODEL"
     )

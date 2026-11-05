@@ -20,7 +20,7 @@ env/
 *.swo
 
 # Data
-data/chroma_db/
+**/data/chroma_db/
 *.sqlite3
 *.sqlite3-journal
 

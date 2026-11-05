@@ -59,14 +59,16 @@ pip install -r requirements.txt
 
 ### Configuration
 
-Edit the `.env` file to configure your OpenAI API key:
+Edit the `.env` file (in `pqr_system/backend/`) to configure the LLM (Huawei Cloud ModelArts MaaS, OpenAI-compatible):
 
 ```env
-OPENAI_API_KEY=sk-your-api-key-here
-OPENAI_MODEL=gpt-4
+PQR_OPENAI_API_KEY=your-maas-key-here
+PQR_OPENAI_BASE_URL=https://api-ap-southeast-1.modelarts-maas.com/openai/v1
+PQR_OPENAI_MODEL=deepseek-v4.1-flash-1017
+PQR_OPENAI_CLASSIFICATION_MODEL=deepseek-v4.1-flash-1017
 ```
 
-> **Note:** The system works without an OpenAI API key using keyword-based classification and response templates as fallback.
+> **Note:** The system works without an API key using keyword-based classification and response templates as fallback.
 
 ### Running
 
